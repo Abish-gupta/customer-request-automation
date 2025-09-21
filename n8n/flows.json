@@ -1,0 +1,359 @@
+{
+  "name": "Customer Request Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "includeSpamTrash": false
+        }
+      },
+      "id": "gmail-trigger",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gmail-credentials",
+          "name": "Gmail OAuth2 Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "format": "resolved"
+      },
+      "id": "gmail-read",
+      "name": "Read Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gmail-credentials",
+          "name": "Gmail OAuth2 Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract email content and basic information\nconst email = $input.first().json;\n\n// Get email body (prefer text over HTML)\nlet emailBody = email.textPlain || email.textHtml || '';\n\n// Clean HTML tags if present\nif (email.textHtml) {\n  emailBody = emailBody.replace(/<[^>]*>/g, '');\n  emailBody = emailBody.replace(/&nbsp;/g, ' ');\n  emailBody = emailBody.replace(/&amp;/g, '&');\n  emailBody = emailBody.replace(/&lt;/g, '<');\n  emailBody = emailBody.replace(/&gt;/g, '>');\n}\n\n// Extract sender information\nconst sender = email.from || 'Unknown';\nconst subject = email.subject || 'No Subject';\nconst timestamp = email.date || new Date().toISOString();\n\n// Basic parsing for order information\nlet customerName = 'Unknown';\nlet phoneNumber = 'N/A';\nlet orderDetails = emailBody;\nlet priority = 'Medium';\n\n// Try to extract customer name (look for common patterns)\nconst namePatterns = [\n  /(?:customer|name|from):\\s*([^\\n\\r]+)/i,\n  /(?:hi|hello|dear)\\s+([^,\\n\\r]+)/i,\n  /^([^,\\n\\r]+)\\s*[,;]/i\n];\n\nfor (const pattern of namePatterns) {\n  const match = emailBody.match(pattern);\n  if (match && match[1]) {\n    customerName = match[1].trim();\n    break;\n  }\n}\n\n// Try to extract phone number\nconst phonePattern = /(\\+?1?[-.\\(\\s]?)?\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})/;\nconst phoneMatch = emailBody.match(phonePattern);\nif (phoneMatch) {\n  phoneNumber = phoneMatch[0];\n}\n\n// Determine priority based on keywords\nconst highPriorityKeywords = ['urgent', 'asap', 'immediately', 'rush', 'priority', 'express'];\nconst lowPriorityKeywords = ['when possible', 'no rush', 'standard', 'regular'];\n\nconst bodyLower = emailBody.toLowerCase();\nif (highPriorityKeywords.some(keyword => bodyLower.includes(keyword))) {\n  priority = 'High';\n} else if (lowPriorityKeywords.some(keyword => bodyLower.includes(keyword))) {\n  priority = 'Low';\n}\n\n// Prepare the output\nreturn {\n  json: {\n    timestamp: timestamp,\n    customerName: customerName,\n    phoneNumber: phoneNumber,\n    orderDetails: orderDetails,\n    priority: priority,\n    status: 'Pending',\n    assignedTo: 'Unassigned',\n    notes: `Parsed from email: ${subject}`,\n    originalEmail: {\n      from: sender,\n      subject: subject,\n      body: emailBody\n    }\n  }\n};"
+      },
+      "id": "email-parser",
+      "name": "Parse Email Content",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-3.5-turbo",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an AI assistant that extracts structured order information from customer messages. Extract customer name, phone number, order details, and priority level. Return the information in a clear, structured format."
+            },
+            {
+              "role": "user",
+              "content": "Extract order information from this customer message:\n\nCustomer: {{ $json.originalEmail.from }}\nSubject: {{ $json.originalEmail.subject }}\nMessage: {{ $json.originalEmail.body }}\n\nPlease provide:\n1. Customer Name (if not already extracted)\n2. Phone Number (if present)\n3. Order Details (clean, structured description)\n4. Priority Level (High/Medium/Low based on urgency indicators)\n5. Any special notes or requirements\n\nFormat as JSON with keys: customerName, phoneNumber, orderDetails, priority, notes"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "ai-enhancement",
+      "name": "AI Enhancement",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        900,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credentials",
+          "name": "OpenAI API Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Merge AI-enhanced data with original parsed data\nconst originalData = $input.first().json;\nconst aiResponse = $input.last().json;\n\n// Try to parse AI response (it might be in message.content or directly in json)\nlet aiData = {};\ntry {\n  const aiContent = aiResponse.message?.content || aiResponse.content || JSON.stringify(aiResponse);\n  \n  // Try to extract JSON from the response\n  const jsonMatch = aiContent.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    aiData = JSON.parse(jsonMatch[0]);\n  } else {\n    // Fallback: use original data\n    aiData = originalData;\n  }\n} catch (error) {\n  console.log('AI parsing failed, using original data:', error.message);\n  aiData = originalData;\n}\n\n// Merge the data, preferring AI-enhanced values\nconst finalData = {\n  Timestamp: originalData.timestamp,\n  'Customer Name': aiData.customerName || originalData.customerName,\n  'Phone Number': aiData.phoneNumber || originalData.phoneNumber,\n  'Order Details': aiData.orderDetails || originalData.orderDetails,\n  Priority: aiData.priority || originalData.priority,\n  Status: 'Processing',\n  'Assigned To': 'Unassigned',\n  Notes: aiData.notes || originalData.notes\n};\n\nreturn {\n  json: finalData\n};"
+      },
+      "id": "merge-data",
+      "name": "Merge AI Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "sheet",
+        "operation": "appendOrUpdate",
+        "documentId": "YOUR_SHEET_ID",
+        "sheetName": "Sheet1",
+        "columnToMatchOn": "Timestamp",
+        "valueToMatchOn": "={{ $json.Timestamp }}",
+        "options": {
+          "usePathForKeyRow": true
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $json.Timestamp }}",
+            "Customer Name": "={{ $json['Customer Name'] }}",
+            "Phone Number": "={{ $json['Phone Number'] }}",
+            "Order Details": "={{ $json['Order Details'] }}",
+            "Priority": "={{ $json.Priority }}",
+            "Status": "={{ $json.Status }}",
+            "Assigned To": "={{ $json['Assigned To'] }}",
+            "Notes": "={{ $json.Notes }}"
+          }
+        }
+      },
+      "id": "google-sheets",
+      "name": "Update Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1340,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credentials",
+          "name": "Google Sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "SLACK_WEBHOOK_URL_HERE",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🛒 New Customer Order Processed!\n\n*Customer:* {{ $json['Customer Name'] }}\n*Phone:* {{ $json['Phone Number'] }}\n*Order:* {{ $json['Order Details'] }}\n*Priority:* {{ $json.Priority }}\n*Status:* {{ $json.Status }}\n\n_Processed at: {{ $json.Timestamp }}_"
+            },
+            {
+              "name": "channel",
+              "value": "#customer-orders"
+            },
+            {
+              "name": "username",
+              "value": "Order Bot"
+            },
+            {
+              "name": "icon_emoji",
+              "value": ":robot_face:"
+            }
+          ]
+        }
+      },
+      "id": "slack-notification",
+      "name": "Send Slack Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json.Priority }}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "priority-check",
+      "name": "Check Priority",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "url": "SLACK_WEBHOOK_URL_HERE",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "🚨 HIGH PRIORITY ORDER ALERT! 🚨\n\n*Customer:* {{ $json['Customer Name'] }}\n*Phone:* {{ $json['Phone Number'] }}\n*Order:* {{ $json['Order Details'] }}\n*Priority:* {{ $json.Priority }}\n\n_Immediate attention required!_"
+            },
+            {
+              "name": "channel",
+              "value": "#urgent-orders"
+            },
+            {
+              "name": "username",
+              "value": "Priority Alert Bot"
+            },
+            {
+              "name": "icon_emoji",
+              "value": ":rotating_light:"
+            }
+          ]
+        }
+      },
+      "id": "priority-alert",
+      "name": "High Priority Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        500
+      ]
+    }
+  ],
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Email": {
+      "main": [
+        [
+          {
+            "node": "Parse Email Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Email Content": {
+      "main": [
+        [
+          {
+            "node": "AI Enhancement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Enhancement": {
+      "main": [
+        [
+          {
+            "node": "Merge AI Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge AI Data": {
+      "main": [
+        [
+          {
+            "node": "Check Priority",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Priority": {
+      "main": [
+        [
+          {
+            "node": "High Priority Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Send Slack Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z",
+      "id": "customer-automation",
+      "name": "Customer Automation"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:00:00.000Z",
+  "versionId": "1"
+}

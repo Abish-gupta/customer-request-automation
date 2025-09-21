@@ -1,0 +1,153 @@
+# Customer Request Automation System - Initial Scaffold
+
+## Project Overview
+This project automates the customer request workflow using modern tools and APIs, providing real-time visibility and streamlined processing.
+
+## Problem Statement
+We were receiving customer requests as WhatsApp messages. The old flow was: Team reads WhatsApp messages, manually copies order details into spreadsheets, manually prepares stakeholder reports, internal team had no single place to allocate orders. This caused delays, mistakes, and low transparency.
+
+## Solution Architecture
+- **Input**: Gmail (WhatsApp forwarded messages)
+- **Processing**: n8n workflow with AI parsing
+- **Storage**: Google Sheets
+- **Notifications**: Slack
+- **Dashboard**: GitHub Pages hosted webapp
+
+## Files Created
+
+### Documentation
+- `README.md` - Project overview with problem statement, before/after diagrams, and demo setup instructions
+- `SETUP_STEPS.md` - Detailed step-by-step setup guide for all tools (Gmail, Google Sheets, n8n, Slack, GitHub Pages)
+
+### Visual Assets
+- `assets/before.svg` - SVG diagram showing the old manual process with problems highlighted
+- `assets/after.svg` - SVG diagram showing the new automated process with benefits
+- `assets/growth.svg` - Small growth chart showing processing efficiency improvement
+
+### Web Application
+- `webapp/index.html` - Modern, responsive dashboard with real-time order display
+- `webapp/style.css` - Professional styling with gradient backgrounds and animations
+- `webapp/app.js` - JavaScript application with Google Sheets integration (contains SHEET_CSV_URL placeholder)
+
+### Sample Data
+- `samples/dummy_data.csv` - Sample order data for testing and demonstration
+
+### Automation Workflow
+- `n8n/flows.json` - Complete n8n workflow with Gmail trigger, AI processing, Google Sheets integration, and Slack notifications (contains YOUR_SHEET_ID and SLACK_WEBHOOK_URL_HERE placeholders)
+
+### GitHub Templates
+- `.github/ISSUE_TEMPLATE.md` - Comprehensive issue template for bug reports, feature requests, and setup help
+
+## Key Features
+
+### Dashboard Features
+- Real-time order statistics (total orders, processing time, success rate, today's orders)
+- Interactive orders table with sorting and filtering
+- Processing pipeline status indicators
+- Export functionality for order data
+- Responsive design for mobile and desktop
+
+### Automation Features
+- Gmail trigger for forwarded WhatsApp messages
+- AI-powered content parsing and enhancement
+- Automatic Google Sheets data storage
+- Slack notifications for new orders
+- High-priority order alerts
+- Error handling and retry logic
+
+### Setup Features
+- Comprehensive setup documentation
+- Tool-specific configuration guides
+- Troubleshooting sections
+- Production migration notes
+
+## Placeholders to Configure
+
+### In webapp/app.js
+- `SHEET_CSV_URL = 'PUBLISHED_SHEET_CSV_URL_HERE'` - Replace with actual Google Sheets CSV URL
+
+### In n8n/flows.json
+- `YOUR_SHEET_ID` - Replace with actual Google Sheets ID
+- `SLACK_WEBHOOK_URL_HERE` - Replace with actual Slack webhook URL
+
+## Demo Setup Instructions
+
+1. **Google Sheets Setup**
+   - Create spreadsheet with required columns
+   - Publish as CSV
+   - Set up service account credentials
+
+2. **Gmail Forwarding**
+   - Configure Gmail filters for WhatsApp messages
+   - Test message forwarding
+
+3. **n8n Workflow**
+   - Import the provided workflow JSON
+   - Configure Gmail, Google Sheets, and Slack credentials
+   - Update placeholder URLs
+
+4. **Slack Integration**
+   - Create Slack app and webhook
+   - Configure notification channels
+
+5. **GitHub Pages Deployment**
+   - Upload files to GitHub repository
+   - Enable GitHub Pages
+   - Update CSV URL in webapp
+
+## Production Considerations
+
+For production deployment, consider:
+- **WhatsApp Business API**: Replace Gmail forwarding with direct integration
+- **Database**: Migrate from Google Sheets to PostgreSQL/MySQL
+- **Authentication**: Add user authentication and role-based access
+- **Scaling**: Implement proper queue management and error handling
+- **Monitoring**: Add comprehensive logging and alerting
+- **Security**: Implement proper API security and data encryption
+
+## Technical Stack
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Automation**: n8n workflow platform
+- **Storage**: Google Sheets API
+- **Notifications**: Slack API
+- **AI Processing**: OpenAI GPT-3.5-turbo
+- **Hosting**: GitHub Pages
+- **Version Control**: Git/GitHub
+
+## File Structure
+```
+customer-request-automation/
+├── README.md                 # Project overview and demo instructions
+├── SETUP_STEPS.md           # Detailed setup guide
+├── assets/                  # SVG diagrams and visual assets
+│   ├── before.svg          # Old process diagram
+│   ├── after.svg           # New process diagram
+│   └── growth.svg          # Growth chart
+├── webapp/                  # Frontend dashboard
+│   ├── index.html          # Main dashboard page
+│   ├── style.css           # Styling and animations
+│   └── app.js              # JavaScript application
+├── samples/                 # Sample data
+│   └── dummy_data.csv      # Test order data
+├── n8n/                     # Automation workflows
+│   └── flows.json          # n8n workflow definition
+├── .github/                 # GitHub templates
+│   └── ISSUE_TEMPLATE.md   # Issue reporting template
+└── PR_CURSOR_PROMPT.txt     # This file
+```
+
+## Next Steps
+
+1. Configure the placeholders with actual URLs and credentials
+2. Test the complete workflow with sample data
+3. Deploy to GitHub Pages
+4. Set up monitoring and error handling
+5. Plan migration to production infrastructure
+
+## Support
+
+For setup help or issues, please refer to:
+- [SETUP_STEPS.md](SETUP_STEPS.md) for detailed configuration
+- [.github/ISSUE_TEMPLATE.md](.github/ISSUE_TEMPLATE.md) for issue reporting
+- n8n, Google Sheets, and Slack documentation for API references

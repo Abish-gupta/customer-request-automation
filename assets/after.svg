@@ -1,0 +1,91 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #2e7d32; }
+      .step { font-family: Arial, sans-serif; font-size: 14px; fill: #333; }
+      .arrow { stroke: #4caf50; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .box { fill: #e8f5e8; stroke: #2e7d32; stroke-width: 2; rx: 8; }
+      .icon { font-family: Arial, sans-serif; font-size: 20px; text-anchor: middle; }
+      .benefit { fill: #c8e6c9; stroke: #2e7d32; stroke-width: 2; rx: 8; }
+      .automated { fill: #4caf50; stroke: #2e7d32; stroke-width: 2; rx: 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" class="title" text-anchor="middle">AFTER: Automated Process</text>
+  
+  <!-- Step 1: WhatsApp Messages -->
+  <rect x="50" y="80" width="120" height="80" class="box" />
+  <text x="110" y="105" class="icon">📱</text>
+  <text x="110" y="125" class="step" text-anchor="middle">WhatsApp</text>
+  <text x="110" y="140" class="step" text-anchor="middle">Messages</text>
+  
+  <!-- Arrow 1 -->
+  <line x1="170" y1="120" x2="220" y2="120" class="arrow" />
+  
+  <!-- Step 2: Gmail Forwarding -->
+  <rect x="230" y="80" width="120" height="80" class="automated" />
+  <text x="290" y="105" class="icon">📧</text>
+  <text x="290" y="125" class="step" text-anchor="middle">Gmail</text>
+  <text x="290" y="140" class="step" text-anchor="middle">Forwarding</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="350" y1="120" x2="400" y2="120" class="arrow" />
+  
+  <!-- Step 3: n8n Processing -->
+  <rect x="410" y="80" width="120" height="80" class="automated" />
+  <text x="470" y="105" class="icon">⚙️</text>
+  <text x="470" y="125" class="step" text-anchor="middle">n8n</text>
+  <text x="470" y="140" class="step" text-anchor="middle">Processing</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="530" y1="120" x2="580" y2="120" class="arrow" />
+  
+  <!-- Step 4: Google Sheets -->
+  <rect x="590" y="80" width="120" height="80" class="automated" />
+  <text x="650" y="105" class="icon">📊</text>
+  <text x="650" y="125" class="step" text-anchor="middle">Google</text>
+  <text x="650" y="140" class="step" text-anchor="middle">Sheets</text>
+  
+  <!-- Parallel processes -->
+  <!-- Slack Notification -->
+  <line x1="470" y1="160" x2="470" y2="200" class="arrow" />
+  <rect x="410" y="210" width="120" height="60" class="automated" />
+  <text x="470" y="235" class="icon">💬</text>
+  <text x="470" y="255" class="step" text-anchor="middle">Slack</text>
+  <text x="470" y="270" class="step" text-anchor="middle">Alerts</text>
+  
+  <!-- Web Dashboard -->
+  <line x1="650" y1="160" x2="650" y2="200" class="arrow" />
+  <rect x="590" y="210" width="120" height="60" class="automated" />
+  <text x="650" y="235" class="icon">🖥️</text>
+  <text x="650" y="255" class="step" text-anchor="middle">Web</text>
+  <text x="650" y="270" class="step" text-anchor="middle">Dashboard</text>
+  
+  <!-- Benefits Section -->
+  <rect x="50" y="320" width="700" height="120" class="benefit" />
+  <text x="400" y="350" class="step" text-anchor="middle" font-weight="bold" font-size="16">Benefits of Automated Process</text>
+  
+  <text x="100" y="380" class="step">• Real-time processing</text>
+  <text x="100" y="400" class="step">• Zero human errors</text>
+  <text x="100" y="420" class="step">• Centralized tracking</text>
+  
+  <text x="450" y="380" class="step">• Instant notifications</text>
+  <text x="450" y="400" class="step">• 90% time reduction</text>
+  <text x="450" y="420" class="step">• Full transparency</text>
+  
+  <!-- Time indicators -->
+  <text x="110" y="200" class="step" font-size="12" fill="#2e7d32">Instant</text>
+  <text x="290" y="200" class="step" font-size="12" fill="#2e7d32">Auto</text>
+  <text x="470" y="200" class="step" font-size="12" fill="#2e7d32">30 sec</text>
+  <text x="650" y="200" class="step" font-size="12" fill="#2e7d32">Auto</text>
+  
+  <!-- Total time -->
+  <text x="400" y="480" class="step" text-anchor="middle" font-weight="bold" font-size="18" fill="#2e7d32">Total Processing Time: 30 seconds per order</text>
+  
+  <!-- Efficiency indicator -->
+  <text x="400" y="500" class="step" text-anchor="middle" font-weight="bold" font-size="14" fill="#2e7d32">⚡ 40x faster than manual process</text>
+</svg>

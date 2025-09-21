@@ -1,0 +1,72 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #d32f2f; }
+      .step { font-family: Arial, sans-serif; font-size: 14px; fill: #333; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .box { fill: #ffebee; stroke: #d32f2f; stroke-width: 2; rx: 8; }
+      .icon { font-family: Arial, sans-serif; font-size: 20px; text-anchor: middle; }
+      .problem { fill: #ffcdd2; stroke: #d32f2f; stroke-width: 2; rx: 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" class="title" text-anchor="middle">BEFORE: Manual Process</text>
+  
+  <!-- Step 1: WhatsApp Messages -->
+  <rect x="50" y="80" width="120" height="80" class="box" />
+  <text x="110" y="105" class="icon">📱</text>
+  <text x="110" y="125" class="step" text-anchor="middle">WhatsApp</text>
+  <text x="110" y="140" class="step" text-anchor="middle">Messages</text>
+  
+  <!-- Arrow 1 -->
+  <line x1="170" y1="120" x2="220" y2="120" class="arrow" />
+  
+  <!-- Step 2: Manual Reading -->
+  <rect x="230" y="80" width="120" height="80" class="box" />
+  <text x="290" y="105" class="icon">👥</text>
+  <text x="290" y="125" class="step" text-anchor="middle">Team Reads</text>
+  <text x="290" y="140" class="step" text-anchor="middle">Messages</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="350" y1="120" x2="400" y2="120" class="arrow" />
+  
+  <!-- Step 3: Manual Copy -->
+  <rect x="410" y="80" width="120" height="80" class="box" />
+  <text x="470" y="105" class="icon">📋</text>
+  <text x="470" y="125" class="step" text-anchor="middle">Copy to</text>
+  <text x="470" y="140" class="step" text-anchor="middle">Spreadsheet</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="530" y1="120" x2="580" y2="120" class="arrow" />
+  
+  <!-- Step 4: Manual Reports -->
+  <rect x="590" y="80" width="120" height="80" class="box" />
+  <text x="650" y="105" class="icon">📊</text>
+  <text x="650" y="125" class="step" text-anchor="middle">Manual</text>
+  <text x="650" y="140" class="step" text-anchor="middle">Reports</text>
+  
+  <!-- Problems Section -->
+  <rect x="50" y="220" width="700" height="120" class="problem" />
+  <text x="400" y="250" class="step" text-anchor="middle" font-weight="bold" font-size="16">Problems with Manual Process</text>
+  
+  <text x="100" y="280" class="step">• Delays in processing</text>
+  <text x="100" y="300" class="step">• Human errors in data entry</text>
+  <text x="100" y="320" class="step">• No centralized order tracking</text>
+  
+  <text x="450" y="280" class="step">• Low transparency</text>
+  <text x="450" y="300" class="step">• Inconsistent reporting</text>
+  <text x="450" y="320" class="step">• Resource intensive</text>
+  
+  <!-- Time indicators -->
+  <text x="110" y="200" class="step" font-size="12" fill="#d32f2f">5-10 min</text>
+  <text x="290" y="200" class="step" font-size="12" fill="#d32f2f">2-5 min</text>
+  <text x="470" y="200" class="step" font-size="12" fill="#d32f2f">3-8 min</text>
+  <text x="650" y="200" class="step" font-size="12" fill="#d32f2f">10-15 min</text>
+  
+  <!-- Total time -->
+  <text x="400" y="380" class="step" text-anchor="middle" font-weight="bold" font-size="18" fill="#d32f2f">Total Processing Time: 20-38 minutes per order</text>
+</svg>
