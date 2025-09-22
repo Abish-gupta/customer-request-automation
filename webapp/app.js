@@ -2,7 +2,7 @@
 // Configuration
 const CONFIG = {
     // Replace with your published Google Sheets CSV URL
-    SHEET_CSV_URL: 'PUBLISHED_SHEET_CSV_URL_HERE',
+    SHEET_CSV_URL: 'https://docs.google.com/spreadsheets/d/1ZW4TpU0806fovKV1bcePmq9tocIbPnjaW3ErPMwuffY/export?format=csv&gid=0',
     REFRESH_INTERVAL: 30000, // 30 seconds
     MAX_RETRIES: 3
 };
