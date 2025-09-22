@@ -83,12 +83,7 @@ For production deployment, consider:
 ├── samples/                 # Sample data files
 ├── n8n/                     # Workflow definitions
 ├── .github/                 # GitHub templates
-└── PR_CURSOR_PROMPT.txt     # Development prompt
 ```
-
-## Contributing
-
-Please read our [Issue Template](.github/ISSUE_TEMPLATE.md) before submitting issues or pull requests.
 
 ## License
 
