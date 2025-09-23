@@ -20,7 +20,7 @@ This project automates the entire customer request workflow using modern tools a
 - High error rates and delays
 
 #### After (Automated Process)
-![After Process](assets/after.svg)
+![After Process](assets/after_2.png)
 
 - Automated message parsing and processing
 - Real-time data synchronization
@@ -45,14 +45,6 @@ This demo uses Gmail forwarding as a bridge for WhatsApp messages. Here's how to
 - Growth tracking and analytics
 
 ![Growth Chart](assets/growth.svg)
-
-## Quick Start
-
-1. Follow the detailed setup instructions in [SETUP_STEPS.md](SETUP_STEPS.md)
-2. Configure your Gmail forwarding
-3. Import the n8n workflow
-4. Deploy the webapp to GitHub Pages
-5. Start forwarding WhatsApp messages to test
 
 ## Architecture
 
