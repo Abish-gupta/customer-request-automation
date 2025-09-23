@@ -11,7 +11,7 @@ This project automates the entire customer request workflow using modern tools a
 ### Before vs After
 
 #### Before (Manual Process)
-![Before Process](assets/before.svg)
+![Before Process](assets/before_1.png)
 
 - Manual WhatsApp message reading
 - Copy-paste order details to spreadsheets
