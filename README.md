@@ -1,3 +1,11 @@
+---
+
+**🔗 Project Links:**
+- [Live Dashboard (index.html)](https://abish-gupta.github.io/customer-request-automation/)
+- [Success Story (story.html)](https://abish-gupta.github.io/customer-request-automation/story.html)
+
+---
+
 [Live Demo & Dashboard](https://abish-gupta.github.io/customer-request-automation/)
 
 # Customer Request Automation System
