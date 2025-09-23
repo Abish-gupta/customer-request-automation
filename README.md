@@ -1,3 +1,5 @@
+[Live Demo & Dashboard](https://abish-gupta.github.io/customer-request-automation/)
+
 # Customer Request Automation System
 
 ## Problem Statement
@@ -11,6 +13,7 @@ This project automates the entire customer request workflow using modern tools a
 ### Before vs After
 
 #### Before (Manual Process)
+
 ![Before Process](assets/before_1.png)
 
 - Manual WhatsApp message reading
@@ -20,6 +23,7 @@ This project automates the entire customer request workflow using modern tools a
 - High error rates and delays
 
 #### After (Automated Process)
+
 ![After Process](assets/after_2.png)
 
 - Automated message parsing and processing
@@ -33,11 +37,13 @@ This project automates the entire customer request workflow using modern tools a
 This demo uses Gmail forwarding as a bridge for WhatsApp messages. Here's how to set it up:
 
 ### Gmail Forwarding Setup
+
 1. In WhatsApp, forward messages to your Gmail address
 2. Set up Gmail filters to automatically forward to the automation system
 3. The system will parse and process these forwarded messages
 
 ### Demo Features
+
 - Real-time order processing
 - Google Sheets integration
 - Slack notifications
