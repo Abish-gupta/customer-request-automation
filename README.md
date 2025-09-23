@@ -1,12 +1,10 @@
 ---
 
 **🔗 Project Links:**
+
 - [Live Dashboard (index.html)](https://abish-gupta.github.io/customer-request-automation/)
 - [Success Story (story.html)](https://abish-gupta.github.io/customer-request-automation/story.html)
 
----
-
-[Live Demo & Dashboard](https://abish-gupta.github.io/customer-request-automation/)
 
 # Customer Request Automation System
 
@@ -79,18 +77,4 @@ For production deployment, consider:
 - **Monitoring**: Add comprehensive logging and alerting
 - **Security**: Implement proper API security and data encryption
 
-## Files Structure
 
-```
-├── README.md                 # This file
-├── SETUP_STEPS.md           # Detailed setup instructions
-├── assets/                  # SVG diagrams and images
-├── webapp/                  # Frontend dashboard
-├── samples/                 # Sample data files
-├── n8n/                     # Workflow definitions
-├── .github/                 # GitHub templates
-```
-
-## License
-
-MIT License - see LICENSE file for details
